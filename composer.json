@@ -11,5 +11,10 @@
         "psr-4": {
             "JacobSantos\\CodingChallenge\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JacobSantos\\CodingChallenge\\Tests\\": "tests/"
+        }
     }
 }

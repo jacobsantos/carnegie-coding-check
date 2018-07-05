@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 /**
  * CLI script loading Symfony Console Application to handle the arguments.
