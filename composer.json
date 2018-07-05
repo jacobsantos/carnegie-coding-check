@@ -1,0 +1,15 @@
+{
+    "name": "jacobsantos/carnegie-coding-check",
+    "description": "Coding challenge",
+    "require": {
+        "symfony/console": "4.1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "7.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "JacobSantos\\CodingChallenge\\": "src/"
+        }
+    }
+}
