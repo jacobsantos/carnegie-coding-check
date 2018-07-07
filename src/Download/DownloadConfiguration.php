@@ -1,6 +1,7 @@
 <?php
 namespace JacobSantos\CodingChallenge\Download;
 
+use JacobSantos\CodingChallenge\Util\ByteConverter;
 use JacobSantos\CodingChallenge\Util\ToByteTransformable;
 
 /**
@@ -42,6 +43,11 @@ class DownloadConfiguration implements DownloadConfigurable
 	 */
 	private $size_converter;
 
+	public function __construct()
+	{
+		$this->size_converter = new ByteConverter;
+	}
+
 	/**
 	 * @param ToByteTransformable $converter
 	 * @return DownloadConfigurable
@@ -71,18 +77,6 @@ class DownloadConfiguration implements DownloadConfigurable
 	}
 
 	/**
-	 * @param int $chunks
-	 * @param string $chunk_size
-	 * @return DownloadConfigurable
-	 */
-	public function set_chunk(int $chunks, string $chunk_size = '1MiB'): DownloadConfigurable
-	{
-		$this->chunks = $chunks;
-		$this->chunk_size = $chunk_size;
-		return $this;
-	}
-
-	/**
 	 * @return int
 	 */
 	public function get_chunks(): int
@@ -91,18 +85,28 @@ class DownloadConfiguration implements DownloadConfigurable
 	}
 
 	/**
-	 * @return int
+	 * @param int $chunks
+	 * @return DownloadConfigurable
 	 */
-	public function get_chunk_bytes(): int
+	public function set_chunks(int $chunks = self::DEFAULT_CHUNKS): DownloadConfigurable
 	{
-		return $this->size_converter->from_size($this->chunk_size)->to_bytes();
+		$this->chunks = $chunks;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_download_size(): string
+	{
+		return $this->download_size;
 	}
 
 	/**
 	 * @param string $value
 	 * @return DownloadConfigurable
 	 */
-	public function set_download_size(string $value): DownloadConfigurable
+	public function set_download_size(string $value=self::DEFAULT_DOWNLOAD_SIZE): DownloadConfigurable
 	{
 		$this->download_size = $value;
 		return $this;
@@ -117,9 +121,19 @@ class DownloadConfiguration implements DownloadConfigurable
 	}
 
 	/**
-	 * @return int
+	 * @param string $chunk_size
+	 * @return DownloadConfigurable
 	 */
-	public function get_chunk_size(): int
+	public function set_chunk_size(string $chunk_size = self::DEFAULT_CHUNK_SIZE): DownloadConfigurable
+	{
+		$this->chunk_size = $chunk_size;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_chunk_size(): string
 	{
 		return $this->chunk_size;
 	}
@@ -127,9 +141,9 @@ class DownloadConfiguration implements DownloadConfigurable
 	/**
 	 * @return int
 	 */
-	public function get_download_size(): int
+	public function get_chunk_bytes(): int
 	{
-		return $this->download_size;
+		return $this->size_converter->from_size($this->chunk_size)->to_bytes();
 	}
 
 	/**
@@ -142,8 +156,9 @@ class DownloadConfiguration implements DownloadConfigurable
 	 */
 	public function part_range(int $part): string
 	{
-		$start_range = ($part - 1) * $this->get_chunk_bytes();
-		$end_range = $part * $this->get_chunk_bytes() - 1;
+		$chunk_bytes = $this->get_chunk_bytes();
+		$start_range = ($part - 1) * $chunk_bytes;
+		$end_range = $part * $chunk_bytes - 1;
 		return "{$start_range}-{$end_range}";
 	}
 }

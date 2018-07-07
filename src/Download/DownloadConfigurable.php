@@ -40,20 +40,20 @@ interface DownloadConfigurable
 	public function set_chunks(int $chunks=self::DEFAULT_CHUNKS): DownloadConfigurable;
 
 	/**
+	 * @return int
+	 */
+	public function get_chunks(): int;
+
+	/**
 	 * @param string $chunk_size
 	 * @return DownloadConfigurable
 	 */
 	public function set_chunk_size(string $chunk_size=self::DEFAULT_CHUNK_SIZE): DownloadConfigurable;
 
 	/**
-	 * @return int
+	 * @return string
 	 */
-	public function get_chunks(): int;
-
-	/**
-	 * @return int
-	 */
-	public function get_chunk_size(): int;
+	public function get_chunk_size(): string;
 
 	/**
 	 * @return int
@@ -67,9 +67,9 @@ interface DownloadConfigurable
 	public function set_download_size(string $value=self::DEFAULT_DOWNLOAD_SIZE): DownloadConfigurable;
 
 	/**
-	 * @return int
+	 * @return string
 	 */
-	public function get_download_size(): int;
+	public function get_download_size(): string;
 
 	/**
 	 * @return int

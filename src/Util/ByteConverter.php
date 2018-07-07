@@ -60,7 +60,7 @@ class ByteConverter implements ToByteTransformable
 			case $this->is_gibibyte():
 				return $value * self::GIB;
 		}
-		return $value;
+		return (int) $value;
 	}
 
 	/**
@@ -128,9 +128,9 @@ class ByteConverter implements ToByteTransformable
 
 	/**
 	 * @param string $order
-	 * @return int
+	 * @return bool
 	 */
-	public function is_size(string $order): int
+	public function is_size(string $order): bool
 	{
 		return stripos($this->value, $order) !== false;
 	}
