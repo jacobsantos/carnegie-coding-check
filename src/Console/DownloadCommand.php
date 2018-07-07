@@ -30,6 +30,7 @@ class DownloadCommand extends Command
 			->setHelp('Allows downloading a file in parts.')
 			->setDefinition(
 				new InputDefinition([
+					new InputOption('url', 'u', InputOption::VALUE_REQUIRED, 'Source url address to file to download'),
 					new InputOption('output', 'o', InputOption::VALUE_OPTIONAL, 'Destination file path to output'),
 					new InputOption('chunks', 'c', InputOption::VALUE_OPTIONAL. 'Number of chunks to download'),
 					new InputOption('chunk-size', 's', InputOption::VALUE_OPTIONAL, 'Size of chunks'),
@@ -41,7 +42,6 @@ class DownloadCommand extends Command
 					),
 				])
 			)
-			->addArgument('url', InputArgument::REQUIRED, 'Source url address to file to download')
 		;
 	}
 
@@ -51,13 +51,15 @@ class DownloadCommand extends Command
 
 		$configuration = new DownloadConfiguration;
 		$configuration->set_size_converter(new ByteConverter);
-		$configuration->set_url($input->getParameterOption('url'));
-		$configuration->set_chunks($input->getParameterOption('chunks', DownloadConfigurable::DEFAULT_CHUNKS));
+		$configuration->set_url($input->getOption('url'));
+		$configuration->set_chunks(
+			$input->getOption('chunks') ?: DownloadConfigurable::DEFAULT_CHUNKS
+		);
 		$configuration->set_chunk_size(
-			$input->getParameterOption('chunk-size', DownloadConfigurable::DEFAULT_CHUNK_SIZE)
+			$input->getOption('chunk-size') ?: DownloadConfigurable::DEFAULT_CHUNK_SIZE
 		);
 		$configuration->set_download_size(
-			$input->getParameterOption('download-size', DownloadConfigurable::DEFAULT_DOWNLOAD_SIZE)
+			$input->getOption('download-size') ?: DownloadConfigurable::DEFAULT_DOWNLOAD_SIZE
 		);
 
 		$downloader = new FileDownloader;

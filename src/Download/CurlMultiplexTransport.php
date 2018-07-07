@@ -36,7 +36,6 @@ class CurlMultiplexTransport implements MultiplexTransportable
 
 	public function multiplex_execute()
 	{
-		$active = null;
 		do {
 			curl_multi_exec($this->multi_handle, $active);
 		} while ($active);
